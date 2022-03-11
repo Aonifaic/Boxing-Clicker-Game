@@ -34,6 +34,10 @@ var display = {
     openMenu: function() {
         document.getElementById("menuContainer").innerHTML = "";
         document.getElementById("menuContainer").innerHTML += '<table class="menuButton unselectable" onclick="resetGame()"><tr><td id="resetButton"><p>Reset Game</p></td></tr></table><table class="menuButton unselectable" onclick="saveGame()"><tr><td id="saveButton"><p>Save Game</p></td></tr></table>'
+    },
+
+    closeMenu: function() {
+        document.getElementById("menuContainer").innerHTML = "";
     }
 }
 
