@@ -27,6 +27,13 @@ var display = {
         for (i = 0; i < skill.name.length; i++) {
             document.getElementById("shopContainer").innerHTML += '<table class="shopButton unslectable" onclick="skill.purchase('+i+')"><tr><td id="image"><img src="'+skill.image[i]+'"></td><td id="nameAndCost"><p>'+skill.name[i]+'</p><p><span>'+skill.cost[i]+'</span> KO Points</p></td><td id="amount"><span>'+skill.count[i]+'</span></td></tr></table>'
         }
+    },
+
+    menuOpen: false,
+
+    openMenu: function() {
+        document.getElementById("menuContainer").innerHTML = "";
+        document.getElementById("menuContainer").innerHTML += '<table class="menuButton unselectable" onclick="resetGame()"><tr><td id="resetButton"><p>Reset Game</p></td></tr></table><table class="menuButton unselectable" onclick="saveGame()"><tr><td id="saveButton"><p>Save Game</p></td></tr></table>'
     }
 }
 
@@ -144,6 +151,24 @@ var skill = {
     }
 };
 
+//update game when menu is clicked
+document.getElementById("menu").addEventListener("click", function() {
+    //check if menu is open
+    if (display.menuOpen == true) {
+        //close the menu
+        display.closeMenu();
+
+        //change menu open to false
+        display.menuOpen = false;
+    } else if (display.menuOpen == false) {
+        //open the menu
+        display.openMenu();
+
+        //change menu open to true
+        display.menuOpen = true;
+    }
+}, false);
+
 //saves the game
 function saveGame() {
     //create array of variables
@@ -180,7 +205,7 @@ function loadGame() {
                 skill.cost[i] = savedGame.skillCost[i];
             }
         }
-        if (typeof savedGame.skillIncome !== "undefined") {
+        if (typeof savedGame.skillIncome  !== "undefined") {
             for(i = 0; i < savedGame.skillIncome.length; i++) {
                 skill.income[i] = savedGame.skillIncome[i];
             }
@@ -193,6 +218,7 @@ window.onload = function() {
     loadGame();
     display.updateScore();
     display.updateShop();
+    display.menuOpen = false;
 };
 
 //Saves the game when ctrl + s is hit
@@ -207,6 +233,7 @@ document.addEventListener("keydown", function(event) {
 setInterval (function(){
     saveGame();
 }, 30000);
+
 
 //Resets the game
 function resetGame() {

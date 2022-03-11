@@ -64,6 +64,8 @@
 	transition: all.2s ease-in-out;
 	border-radius: 10px;
 	margin: 10px 0px 10px 0px;
+	width: 50%;
+	margin-left: 25%;
 }
 
 .shopButton:hover {
@@ -101,6 +103,38 @@
 	font-size: 30px;
 	font-weight: bold;
 	margin: 0;
+}
+
+#menu {
+	background-image: url(./images/menu.png);
+	background-size: contain;
+	width: 64px;
+	height: 64px;
+	cursor: pointer;
+	position: relative;
+	margin-left: 10px;
+}
+
+.menuButton {
+	background-color: rgb(238, 238, 238);
+	transition: all.2s ease-in-out;
+	border-radius: 10px;
+	margin: 10px 0px 10px 0px;
+	width: 34%;
+	margin-left: 33%;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.menuButton:hover {
+	background-color: rgb(238, 238, 260);
+	transition: all .2s ease-in-out;
+}
+
+.menuButton p {
+	width: 100%;
+	font-size: 24px;
+	font-weight: bold;
 }
 
 .unselectable {
