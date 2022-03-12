@@ -1,44 +1,81 @@
 
 var game = {
-    //stores data on score,total score, click value and total clicks
+    //stores data on variables
     score: 0,
     totalScore: 0,
     clickValue: 1,
     totalClicks: 0,
     prestige: 0,
     
-    // adds amount to the score and total score, calls update score function
+    //increase score by an amount
     addToScore: function(amount) {
+        //adds amount to game score
         this.score += amount;
+
+        //adds amount to total game score
         this.totalScore += amount;
+
+        //calls update score function
         display.updateScore();
     }
 };
 
 var display = {
+       //define menu booleens
+       isMenuOpen: false,
+       isShopMenuOpen: false, 
+   
     //updates the score and title
     updateScore: function() {
+        //sets id of score to game score
         document.getElementById("score").innerHTML = game.score;
+
+        //sets title to game score
         document.title = game.score + " KO points - Boxing Clicker";
     },
-
+    
+    //updates shop
     updateShop: function() {
+        //sets div id of shopContainer to empty
         document.getElementById("shopContainer").innerHTML = "";
-        for (i = 0; i < skill.name.length; i++) {
-            document.getElementById("shopContainer").innerHTML += '<table class="shopButton unslectable" onclick="skill.purchase('+i+')"><tr><td id="image"><img src="'+skill.image[i]+'"></td><td id="nameAndCost"><p>'+skill.name[i]+'</p><p><span>'+skill.cost[i]+'</span> KO Points</p></td><td id="amount"><span>'+skill.count[i]+'</span></td></tr></table>'
+
+        if (this.isShopMenuOpen == false) {
+            //adds table div for every skill to id of shopContainer
+            for (i = 0; i < skill.name.length; i++) {
+                document.getElementById("shopContainer").innerHTML += '<table class="shopButton unslectable" onclick="skill.purchase('+i+')"><tr><td id="image"><img src="'+skill.image[i]+'"></td><td id="nameAndCost"><p>'+skill.name[i]+'</p><p><span>'+skill.cost[i]+'</span> KO Points</p></td><td id="amount"><span>'+skill.count[i]+'</span></td></tr></table>'
+            }
+
+            // change the isShopMenuOpen variable to true
+            this.isShopMenuOpen = true;
+        } else if (this.isShopMenuOpen == true) {
+            //change the isShopMenuOpen variable to false
+            this.isShopMenuOpen = false;
+        }
+        
+    },
+
+ 
+    //updates the menu
+    updateMenu: function() {
+        //set div id of menuContainer to empty
+        document.getElementById("menuContainer").innerHTML = "";
+
+        // if menu isn't open adds table buttons for save and reset game
+        if (this.isMenuOpen == false) {
+            document.getElementById("menuContainer").innerHTML += '<table class="menuButton unselectable" onclick="resetGame()"><tr><td id="resetButton"><p>Reset Game</p></td></tr></table><table class="menuButton unselectable" onclick="saveGame()"><tr><td id="saveButton"><p>Save Game</p></td></tr></table>'
+            
+            //changes the isMenuOpen variable to true
+            this.isMenuOpen = true;
+         
+        // if menu is open it leaves the menuContainer to be empty     
+        } else if (this.isMenuOpen == true) {
+            // change the isMenuOpen variable to false
+            this.isMenuOpen = false;
         }
     },
 
-    menuOpen: false,
 
-    openMenu: function() {
-        document.getElementById("menuContainer").innerHTML = "";
-        document.getElementById("menuContainer").innerHTML += '<table class="menuButton unselectable" onclick="resetGame()"><tr><td id="resetButton"><p>Reset Game</p></td></tr></table><table class="menuButton unselectable" onclick="saveGame()"><tr><td id="saveButton"><p>Save Game</p></td></tr></table>'
-    },
 
-    closeMenu: function() {
-        document.getElementById("menuContainer").innerHTML = "";
-    }
 }
 
 //updates game when clicker is clicked
@@ -104,8 +141,8 @@ function randomNumber(min,max) {
     return Math.round(Math.random() * (max-min) + min);
 }
 
-
 var skill = {
+    //define all the variables
     name: [
         "Jab",
         "Cross",
@@ -150,6 +187,8 @@ var skill = {
             }
             // updates the score and shop
             display.updateScore();
+            //updates twice to open menu again
+            display.updateShop();
             display.updateShop();
         }
     }
@@ -157,20 +196,14 @@ var skill = {
 
 //update game when menu is clicked
 document.getElementById("menu").addEventListener("click", function() {
-    //check if menu is open
-    if (display.menuOpen == true) {
-        //close the menu
-        display.closeMenu();
+    //call update menu function
+    display.updateMenu();
+}, false);
 
-        //change menu open to false
-        display.menuOpen = false;
-    } else if (display.menuOpen == false) {
-        //open the menu
-        display.openMenu();
-
-        //change menu open to true
-        display.menuOpen = true;
-    }
+//update game when shopMenu is clicked
+document.getElementById("shopMenu").addEventListener("click", function() {
+    //call the update shopMenu function
+    display.updateShop();
 }, false);
 
 //saves the game
@@ -219,10 +252,15 @@ function loadGame() {
 
 //loads game when window is reloaded
 window.onload = function() {
+    //call loadGame function
     loadGame();
+    
+    //call updateScore function
     display.updateScore();
-    display.updateShop();
-    display.menuOpen = false;
+
+    //set the menu to closed
+    display.isMenuOpen = false;
+    display.isShopMenuOpen = false;
 };
 
 //Saves the game when ctrl + s is hit

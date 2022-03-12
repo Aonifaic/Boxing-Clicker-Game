@@ -98,11 +98,24 @@
 	width: 15%;
 }
 
-#shopHeading p {
+#shopMenu {
+	width: 80%;	
+	background-color: gray;
+	border-radius: 10px;
+	margin-top: 10px;
+	margin-left: 10%;
+	padding-top: 17px;
+	padding-bottom: 17px;
+	cursor: pointer;
+}
+
+#shopMenu h1 {
 	text-align: center;
+	color: white;
 	font-size: 30px;
 	font-weight: bold;
 	margin: 0;
+	
 }
 
 #menu {
