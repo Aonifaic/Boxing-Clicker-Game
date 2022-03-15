@@ -145,7 +145,49 @@
 	margin: 10px;
 }
 
+#upgradeContainer {
+	display: flex;
+}
+
 #upgradeContainer img {
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
+	margin-left: 10%;
+}
+
+#achievementMenu {
+	width: 80%;	
+	background-color: gray;
+	border-radius: 10px;
+	margin-top: 10px;
+	margin-left: 10%;
+	padding-top: 17px;
+	padding-bottom: 17px;
+	cursor: pointer;
+}
+
+#achievementMenu h1 {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+	margin: 0;
+}
+
+.achievementButton {
+	background-color: lightblue;
+	border-radius: 10px;
+	width: 64px;
+	height: 64px;
+	margin: 10px;
+}
+
+#achievementContainer {
+	display: flex;
+}
+
+#achievementContainer img {
 	width: 80%;
 	height: 80%;
 	margin-top: 10%;

@@ -24,7 +24,8 @@ var display = {
        //define menu booleens
        isMenuOpen: false,
        isShopMenuOpen: false,
-       isUpgradeMenuOpen: false, 
+       isUpgradeMenuOpen: false,
+       isAchievementMenuOpen: false, 
    
     //updates the score and title
     updateScore: function() {
@@ -56,7 +57,7 @@ var display = {
         
     },
 
-     //update the menu
+     //update the upgradeMenu
      updateUpgrades: function() {
         //set div id of upgrade container to empty
         document.getElementById("upgradeContainer").innerHTML = "";
@@ -66,8 +67,10 @@ var display = {
             //adds div for every upgrade to id of upgradeContainer
             for (i = 0; i < upgrade.name.length; i++) {
                 //check that upgrade hasn't been purchased
-                if (!upgrade.purchased[i])
-                document.getElementById("upgradeContainer").innerHTML += '<div class="upgradeButton"><img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' KO Points)" onclick="upgrade.purchase('+i+')"></div>'
+                if (!upgrade.purchased[i]) {
+                    document.getElementById("upgradeContainer").innerHTML += '<div class="upgradeButton"><img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' KO Points)" onclick="upgrade.purchase('+i+')"></div>'
+                }
+                
             }
 
             //change the isUpgradeMenuOpen to true
@@ -76,6 +79,30 @@ var display = {
             //change the isUpgradeMenuOpen to false
             this.isUpgradeMenuOpen = false;
         }
+    },
+
+    //updates the achievementMenu
+    updateAcievements: function() {
+        //set div id of achievementContainer to empty
+        document.getElementById("achievementContainer").innerHTML = "";
+
+       //check if achievement menu is open
+       if (this.isAchievementMenuOpen == false) {
+        //adds div for every achievement to id of achievementContainer
+            for (i = 0; i < achievement.name.length; i++) {
+                //check that achievement has been earned
+                if (achievement.awarded[i]) {
+                    document.getElementById("achievementContainer").innerHTML += '<div class="achievementButton"><img src="images/'+achievement.image[i]+'" title="'+achievement.name[i]+' &#10; '+achievement.description[i]+'"></div>'
+                }
+            }
+
+            //change the isAchievementMenuOpen to true
+            this.isAchievementMenuOpen = true;
+        } else if (this.isAchievementMenuOpen == true) {
+            //change the isUpgradeMenuOpen to false
+            this.isAchievementMenuOpen = false;
+        }
+
     },
 
     //updates the menu
@@ -217,33 +244,40 @@ var skill = {
 var upgrade = {
     //define all the variables
     name: [
-        "Snappy Jabs"
+        "Snappy Jabs",
+        "Powerful Jabs"
     ],
 
     description: [
+        "Jabs are twice as efficient",
         "Jabs are twice as efficient"
     ],
 
     image: [
+        "jab.jpg",
         "jab.jpg"
     ],
 
     skillIndex: [
+        0,
         0
     ],
 
     cost: [
-        100
+        100,
+        200
     ],
 
     requirement: [
-        1
+        1,
+        5
     ],
     
     bonus: [
+        2,
         2
     ],
-    purchased: [false],
+    purchased: [false, false],
 
     purchase: function(index) {
         //if you have enough score and upgrade is not purchased
@@ -257,7 +291,7 @@ var upgrade = {
                 game.score -= this.cost[index];
 
                 //add bonus to clickValue
-                game.clickValue += skill.count[index] * game.clickValue
+                game.clickValue *= this.bonus[index];
 
                 //add bonus to skill income
                 skill.income[this.skillIndex[index]] *= this.bonus[index];
@@ -274,6 +308,39 @@ var upgrade = {
 
             }
         }
+    }
+};
+
+var achievement = {
+    //define all variables
+    name: [
+        "Beginner Fighter"
+    ],
+
+    image: [
+        "boxingBag.jpg"
+    ],
+
+    description: [
+        "Get 1 KO Point"
+    ],
+
+    type: [
+        "score"
+    ],
+
+    objectIndex: [
+        -1
+    ],
+
+    requirement: [
+        1
+    ],
+
+    awarded: [false],
+
+    earn: function(index) {
+        this.awarded[index] = true;
     }
 };
 
@@ -295,6 +362,27 @@ document.getElementById("upgradeMenu").addEventListener("click", function() {
     display.updateUpgrades();
 }, false);
 
+//update game when achievementMenu is clicked
+document.getElementById("achievementMenu").addEventListener("click", function() {
+    //call the update achievementMenu function
+    display.updateAcievements();
+}, false);
+
+//update game every second to check if achievement has been earned
+setInterval (function() {
+    // go through every achievement
+    for (i=0; i < achievement.name.length; i++) {
+        // check what type it is and then if it meets the requirement
+        if (achievement.type[i] == "score" && game.totalScore >= achievement.requirement[i]) {
+            achievement.earn(i);
+        } else if (achievement.type[i] == "click" && game.totalClicks >= achievement.requirement[i]) {
+            achievement.earn(i);
+        } else if (achievement.type[i] == "skill" && skill.count[achievement.objectIndex[i]] >= achievement.requirement[i]) {
+            achievement.earn(i);
+        }
+    }
+}, 1000); // 1000ms = 1 second
+
 //saves the game
 function saveGame() {
     //create array of variables
@@ -306,7 +394,8 @@ function saveGame() {
         prestige: game.prestige,
         skillCount: skill.count,
         skillCost: skill.cost,
-        skillIncome: skill.income
+        skillIncome: skill.income,
+        upgradePurchased: upgrade.purchased
     };
     //store variables into string in local storage
     localStorage.setItem("gameSave", JSON.stringify(gameSave));
@@ -334,6 +423,11 @@ function loadGame() {
         if (typeof savedGame.skillIncome  !== "undefined") {
             for(i = 0; i < savedGame.skillIncome.length; i++) {
                 skill.income[i] = savedGame.skillIncome[i];
+            }
+        }
+        if (typeof savedGame.upgradePurchased  !== "undefined") {
+            for(i = 0; i < savedGame.upgradePurchased.length; i++) {
+                upgrade.purchased[i] = savedGame.upgradePurchased[i];
             }
         }
     }
