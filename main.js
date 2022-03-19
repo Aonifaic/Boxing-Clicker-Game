@@ -194,15 +194,21 @@ var skill = {
         "Jab",
         "Cross",
         "Lead Hook",
-        "Rear Hook"
+        "Rear Hook",
+        "Lead Uppercut",
+        "Rear Uppercut"
     ],
     image: [
         "images/jab.jpg",
         "images/cross.jpg",
         "images/hook.jpg",
-        "images/hook.jpg"
+        "images/hook.jpg",
+        "images/uppercut.jpg",
+        "images/uppercut.jpg"
     ],
     count: [
+        0,
+        0,
         0,
         0,
         0,
@@ -212,13 +218,17 @@ var skill = {
         1,
         10,
         100,
-        1000
+        1000,
+        10000,
+        100000
     ],
     cost: [
         20,
         100,
         500,
-        2500
+        2500,
+        12500,
+        100000
     ],
 
     purchase: function(index) {
@@ -245,39 +255,151 @@ var upgrade = {
     //define all the variables
     name: [
         "Snappy Jabs",
-        "Powerful Jabs"
+        "Powerful Jabs",
+        "Violent Jabs",
+        "Snappy Crosses",
+        "Powerful Crosses",
+        "Violent Crosses",
+        "Snappy Lead Hooks",
+        "Powerful Lead Hooks",
+        "Violent Lead Hooks",
+        "Snappy Rear Hooks",
+        "Powerful Rear Hooks",
+        "Violent Rear Hooks",
+        "Snappy Lead Uppercuts",
+        "Powerful Lead Uppercuts",
+        "Violent Lead Uppercuts",
+        "Snappy Rear Uppercuts",
+        "Powerful Rear Uppercuts",
+        "Violent Rear Uppercuts",
     ],
 
     description: [
         "Jabs are twice as efficient",
-        "Jabs are twice as efficient"
+        "Jabs are twice as efficient",
+        "Jabs are twice as efficient",
+        "Crosses are twice as efficient",
+        "Crosses are twice as efficient",
+        "Crosses are twice as efficient",
+        "Lead Hooks are twice as efficient",
+        "Lead Hooks are twice as efficient",
+        "Lead Hooks are twice as efficient",
+        "Rear Hooks are twice as efficient",
+        "Rear Hooks are twice as efficient",
+        "Rear Hooks are twice as efficient",
+        "Lead Uppercuts are twice as efficient",
+        "Lead Uppercuts are twice as efficient",
+        "Lead Uppercuts are twice as efficient",
+        "Rear Uppercuts are twice as efficient",
+        "Rear Uppercuts are twice as efficient",
+        "Rear Uppercuts are twice as efficient",
     ],
 
     image: [
         "jab.jpg",
-        "jab.jpg"
+        "jab.jpg",
+        "jab.jpg",
+        "cross.jpg",
+        "cross.jpg",
+        "cross.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg"
     ],
 
     skillIndex: [
         0,
-        0
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5
     ],
 
     cost: [
         100,
-        200
+        200,
+        500,
+        100,
+        200,
+        500,
+        100,
+        200,
+        500,
+        100,
+        200,
+        500,
+        100,
+        200,
+        500,
+        100,
+        200,
+        500
     ],
 
     requirement: [
-        1,
-        5
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50
     ],
     
     bonus: [
         2,
-        2
+        4,
+        8,
+        2,
+        4,
+        8,
+        2,
+        4,
+        8,
+        2,
+        4,
+        8,
+        2,
+        4,
+        8,
+        2,
+        4,
+        8
     ],
-    purchased: [false, false],
+    purchased: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
 
     purchase: function(index) {
         //if you have enough score and upgrade is not purchased
@@ -291,7 +413,7 @@ var upgrade = {
                 game.score -= this.cost[index];
 
                 //add bonus to clickValue
-                game.clickValue *= this.bonus[index];
+                game.clickValue += this.bonus[index] * skill.count[this.skillIndex[index]];
 
                 //add bonus to skill income
                 skill.income[this.skillIndex[index]] *= this.bonus[index];
@@ -314,33 +436,177 @@ var upgrade = {
 var achievement = {
     //define all variables
     name: [
-        "Beginner Fighter"
+        "Beginner Fighter",
+        "Intermediate Figher",
+        "Professional Fighter",
+        "Beginner Headbutt",
+        "Intermediate Headbutt",
+        "Professional Headbutt",
+        "Beginner Jab",
+        "Intermediate Jab",
+        "Professional Jab",
+        "Beginner Cross",
+        "Intermediate Cross",
+        "Professional Cross",
+        "Beginner Lead Hook",
+        "Intermediate Lead Hook",
+        "Professional Lead Hook",
+        "Beginner Rear Hook",
+        "Intermediate Rear Hook",
+        "Professional Rear Hook",
+        "Beginner Lead Uppercut",
+        "Intermediate Lead Uppercut",
+        "Professional Lead Uppercut",
+        "Beginner Rear Uppercut",
+        "Intermediate Rear Uppercut",
+        "Professional Rear Uppercut"
     ],
 
     image: [
-        "boxingBag.jpg"
+        "boxingBag.jpg",
+        "boxingBag.jpg",
+        "boxingBag.jpg",
+        "boxingBag.jpg",
+        "boxingBag.jpg",
+        "boxingBag.jpg",
+        "jab.jpg",
+        "jab.jpg",
+        "jab.jpg",
+        "cross.jpg",
+        "cross.jpg",
+        "cross.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "hook.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        "uppercut.jpg",
+        
     ],
 
     description: [
-        "Get 1 KO Point"
+        "Get 1 KO Point",
+        "Get 100 KO Points",
+        "Get 10000 KO Points",
+        "Click 1 time",
+        "Click 100 time",
+        "Click 1000 time",
+        "Buy 10 Jabs",
+        "Buy 25 Jabs",
+        "Buy 50 Jabs",
+        "Buy 10 Crosses",
+        "Buy 25 Crosses",
+        "Buy 50 Crosses",
+        "Buy 10 Lead Hooks",
+        "Buy 25 Lead Hooks",
+        "Buy 50 Lead Hooks",
+        "Buy 10 Rear Hooks",
+        "Buy 25 Rear Hooks",
+        "Buy 50 Rear Hooks",
+        "Buy 10 Lead Uppercuts",
+        "Buy 25 Lead Uppercuts",
+        "Buy 50 Lead Uppercuts",
+        "Buy 10 Rear Uppercuts",
+        "Buy 25 Rear Uppercuts",
+        "Buy 50 Rear Uppercuts"
     ],
 
     type: [
-        "score"
+        "score",
+        "score",
+        "score",
+        "click",
+        "click",
+        "click",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill",
+        "skill"
     ],
 
     objectIndex: [
-        -1
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5
     ],
 
     requirement: [
-        1
+        1,
+        100,
+        10000,
+        1,
+        10,
+        100,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50,
+        10,
+        25,
+        50
     ],
 
-    awarded: [false],
+    awarded: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
 
     earn: function(index) {
+        //change awarded to true
         this.awarded[index] = true;
+
+        //update container twice to update and reopen
+        display.updateAcievements;
+        display.updateAcievements;
     }
 };
 

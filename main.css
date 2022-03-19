@@ -1,23 +1,23 @@
 .sectionLeft {
 	float: left;
-	width: 25%;
+	width: 15%;
 	height: 2000px;
-	background-color: green;
+	background-color: rgb(182, 187, 192);
 }
 
 .sectionMiddle {
 	float: left;
-	width: 50%;
+	width: 55%;
 	height: 2000px;
-	background-color: blue;
+	background-color: rgb(255, 255, 255);
 	text-align: center;
 }
 
 .sectionRight {
 	float: left;
-	width: 25%;
+	width: 30%;
 	height: 2000px;
-	background-color: orange;
+	background-color: rgb(182, 187, 192);
 }
 
 #scoreContainer {
@@ -139,14 +139,17 @@
 
 .upgradeButton {
 	background-color: darkgray;
-	border-radius: 10px;
+	border-radius: 3px;
 	width: 64px;
 	height: 64px;
 	margin: 10px;
 }
 
 #upgradeContainer {
+	width: 252px;
 	display: flex;
+	flex-wrap: wrap;
+	margin-left: 10%;
 }
 
 #upgradeContainer img {
@@ -177,14 +180,17 @@
 
 .achievementButton {
 	background-color: lightblue;
-	border-radius: 10px;
+	border-radius: 3px;
 	width: 64px;
 	height: 64px;
 	margin: 10px;
 }
 
 #achievementContainer {
+	width: 252px;
 	display: flex;
+	flex-wrap: wrap;
+	margin-left: 10%;
 }
 
 #achievementContainer img {
@@ -192,6 +198,25 @@
 	height: 80%;
 	margin-top: 10%;
 	margin-left: 10%;
+}
+
+#prestigeMenu {
+	width: 80%;	
+	background-color: gray;
+	border-radius: 10px;
+	margin-top: 10px;
+	margin-left: 10%;
+	padding-top: 17px;
+	padding-bottom: 17px;
+	cursor: pointer;
+}
+
+#prestigeMenu h1 {
+	text-align: center;
+	color: white;
+	font-size: 30px;
+	font-weight: bold;
+	margin: 0;
 }
 
 #menu {
@@ -209,8 +234,8 @@
 	transition: all.2s ease-in-out;
 	border-radius: 10px;
 	margin: 10px 0px 10px 0px;
-	width: 34%;
-	margin-left: 33%;
+	width: 80%;
+	margin-left: 10px;
 	display: inline-block;
 	cursor: pointer;
 }
