@@ -17,6 +17,22 @@ var game = {
 
         //calls update score function
         display.updateScore();
+    },
+
+    //get scorePerSecond
+    getScorePerSecond: function() {
+        //define variable
+        var scorePerSecond = 0;
+        //check if prestige is greater than 1
+        if (this.prestige >= 1) {
+            //add skill count times skill income
+            for (i = 0; i < skill.name.length; i++) {
+                scorePerSecond += skill.count[i] * skill.income[i];
+            }
+            return scorePerSecond;
+        } else if (this.prestige == 0) {
+            return scorePerSecond;
+        }
     }
 };
 
@@ -25,12 +41,16 @@ var display = {
        isMenuOpen: false,
        isShopMenuOpen: false,
        isUpgradeMenuOpen: false,
-       isAchievementMenuOpen: false, 
+       isAchievementMenuOpen: false,
+       isPrestigeMenuOpen: false,
    
     //updates the score and title
     updateScore: function() {
         //sets id of score to game score
         document.getElementById("score").innerHTML = game.score;
+
+        //set scorePerSecond to game ScorePerSecond
+        document.getElementById("scorePerSecond").innerHTML = game.getScorePerSecond();
 
         //sets title to game score
         document.title = game.score + " KO points - Boxing Clicker";
@@ -103,6 +123,23 @@ var display = {
             this.isAchievementMenuOpen = false;
         }
 
+    },
+
+    //update the prestigeMenu
+    updatePrestige: function() {
+        //set prestigeContainer to empty
+        document.getElementById("prestigeContainer").innerHTML = "";
+
+        //check if prestige menu is open
+         if (this.isPrestigeMenuOpen == false) {
+             //add button for prestige
+             document.getElementById("prestigeContainer").innerHTML += '<table class="prestigeButton" onclick="prestigeUp()"><tr><td id="image"><img src="images/boxingBag.jpg"></td><td id="nameAndCost"><p>Ready To Fight!</p><p>1000000 KO Points</p><td id="amount"><span>'+game.prestige+'</span></td></td></tr></table>'
+            //change isPrestigeMenuOpen to true
+            this.isPrestigeMenuOpen = true;
+        } else if (this.isPrestigeMenuOpen == true) {
+            //change isPrestigeMenuOpen to false
+            this.isPrestigeMenuOpen = false;
+        }
     },
 
     //updates the menu
@@ -223,6 +260,15 @@ var skill = {
         100000
     ],
     cost: [
+        20,
+        100,
+        500,
+        2500,
+        12500,
+        100000
+    ],
+
+    defaultCost: [
         20,
         100,
         500,
@@ -427,7 +473,21 @@ var upgrade = {
 
               // if prestige is more than 0 and have enough for requirement  
             } else if (game.prestige >= 1 && skill.count[this.skillIndex[index]] >= this.requirement[index]) {
+                //change to purchased
+                this.purchased[index] = true;
 
+                //take cost from score
+                game.score -= this.cost[index];
+
+                //add bonus to skill income
+                skill.income[this.skillIndex[index]] *= this.bonus[index];
+
+                //update score
+                display.updateScore();
+
+                //update upgradeMenu twice to reopen
+                display.updateUpgrades();
+                display.updateUpgrades();
             }
         }
     }
@@ -610,6 +670,38 @@ var achievement = {
     }
 };
 
+
+function prestigeUp() {
+    var prestigeCost = 1000000;
+    if(confirm("Are you sure you want to prestige?")) {
+        if (game.score >= prestigeCost) {
+            //change the prestige up by 1
+            game.prestige++;
+
+            //reset variables
+            game.score = 0;
+            game.clickValue = 1;
+            for (i = 0; i < skill.name.length; i++) {
+                skill.count[i] = 0;
+                skill.cost[i] = skill.defaultCost[i];
+            }
+            for (i = 0; i < upgrade.name.length; i++) {
+                upgrade.purchased[i] = false;
+            }
+
+            //update the displays
+            display.updateScore();
+            display.updateShop();
+            display.updateUpgrades();
+            display.updateShop();
+            display.updateUpgrades();
+            display.updatePrestige();
+        } else {
+            alert("You do not have enough points!");
+        }
+    }
+}
+
 //update game when menu is clicked
 document.getElementById("menu").addEventListener("click", function() {
     //call update menu function
@@ -634,6 +726,12 @@ document.getElementById("achievementMenu").addEventListener("click", function() 
     display.updateAcievements();
 }, false);
 
+//update game when prestigeMenu is clicked
+document.getElementById("prestigeMenu").addEventListener("click", function() {
+    //call the update prestigeMenu function
+    display.updatePrestige();
+}, false);
+
 //update game every second to check if achievement has been earned
 setInterval (function() {
     // go through every achievement
@@ -648,6 +746,16 @@ setInterval (function() {
         }
     }
 }, 1000); // 1000ms = 1 second
+
+//Update score every second to add scorePerSecond
+setInterval (function() {
+    //add scorePerSecond to score and total score
+    game.score += game.getScorePerSecond();
+    game.totalScore += game.getScorePerSecond();
+
+    //update score display
+    display.updateScore();
+}, 1000); //1000ms = 1 second
 
 //saves the game
 function saveGame() {
@@ -676,6 +784,7 @@ function loadGame() {
         if (typeof savedGame.totalScore !== "undefined") game.totalScore = savedGame.totalScore;
         if (typeof savedGame.totalClicks !== "undefined") game.totalClicks = savedGame.totalClicks;
         if (typeof savedGame.clickValue !== "undefined") game.clickValue = savedGame.clickValue;
+        if (typeof savedGame.prestige !== "undefined") game.prestige = savedGame.prestige;
         if (typeof savedGame.skillCount !== "undefined") {
             for(i = 0; i < savedGame.skillCount.length; i++) {
                 skill.count[i] = savedGame.skillCount[i];
@@ -734,4 +843,8 @@ function resetGame() {
         location.reload();
         loadGame();
     }
+}
+
+function checkPrestige() {
+    alert(game.prestige);
 }

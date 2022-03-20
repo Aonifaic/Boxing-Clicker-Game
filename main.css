@@ -219,6 +219,45 @@
 	margin: 0;
 }
 
+.prestigeButton {
+	background-color: rgb(238, 238, 238);
+	transition: all.2s ease-in-out;
+	border-radius: 10px;
+	margin: 10px 0px 10px 0px;
+	width: 50%;
+	margin-left: 25%;
+}
+
+.prestigeButton:hover {
+	background-color: rgb(238, 238, 250);
+	transition: all .2s ease-in-out;
+}
+
+.prestigeButton #image {
+	width: 25%;
+}
+
+.prestigeButton img {
+	height: 64px;
+	width: 64px;
+}
+
+.prestigeButton #nameAndCost p {
+	margin: 0px;
+	width: 70%;
+}
+
+.prestigeButton #nameAndCost p:first-of-type {
+	font-size: 24px;
+}
+
+.prestigeButton #amount {
+	font-size: 48px;
+	color: #595959;
+	font-family: roboto;
+	width: 15%;
+}
+
 #menu {
 	background-image: url(./images/menu.png);
 	background-size: contain;
