@@ -6,6 +6,8 @@ var game = {
     clickValue: 1,
     totalClicks: 0,
     prestige: 0,
+    prestigePoints: 0,
+    futurePrestigePoints: 0,
     
     //increase score by an amount
     addToScore: function(amount) {
@@ -29,6 +31,8 @@ var game = {
             for (i = 0; i < skill.name.length; i++) {
                 scorePerSecond += skill.count[i] * skill.income[i];
             }
+            //multiply by teaching points
+            scorePerSecond *= this.prestigePoints;
             return scorePerSecond;
         } else if (this.prestige == 0) {
             return scorePerSecond;
@@ -88,7 +92,7 @@ var display = {
             for (i = 0; i < upgrade.name.length; i++) {
                 //check that upgrade hasn't been purchased
                 if (!upgrade.purchased[i]) {
-                    document.getElementById("upgradeContainer").innerHTML += '<div class="upgradeButton"><img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' KO Points)" onclick="upgrade.purchase('+i+')"></div>'
+                    document.getElementById("upgradeContainer").innerHTML += '<div class="upgradeButton"><img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' KO Points) &#10; Required: '+upgrade.requirement[i]+'" onclick="upgrade.purchase('+i+')"></div>'
                 }
                 
             }
@@ -131,9 +135,12 @@ var display = {
         document.getElementById("prestigeContainer").innerHTML = "";
 
         //check if prestige menu is open
-         if (this.isPrestigeMenuOpen == false) {
-             //add button for prestige
-             document.getElementById("prestigeContainer").innerHTML += '<table class="prestigeButton" onclick="prestigeUp()"><tr><td id="image"><img src="images/boxingBag.jpg"></td><td id="nameAndCost"><p>Ready To Fight!</p><p>1000000 KO Points</p><td id="amount"><span>'+game.prestige+'</span></td></td></tr></table>'
+        if (this.isPrestigeMenuOpen == false) {
+            //add button for prestige
+            document.getElementById("prestigeContainer").innerHTML += '<table class="prestigeButton" onclick="prestigeUp()" title="Receive '+game.futurePrestigePoints+' Teaching Points"><tr><td id="image"><img src="images/boxingBag.jpg"></td><td id="name"><p>Ready To Fight!</p><td id="amount"><span>'+game.prestige+'</span></td></td></tr></table>'
+            //add display of teachingPoints
+            document.getElementById("prestigeContainer").innerHTML += '<table class="prestigeButton"><tr><td id="name"><p>Prestige Points</p></td><td id="amount"><p><span>'+game.prestigePoints+'</span></td></tr></table>' 
+
             //change isPrestigeMenuOpen to true
             this.isPrestigeMenuOpen = true;
         } else if (this.isPrestigeMenuOpen == true) {
@@ -678,6 +685,15 @@ function prestigeUp() {
             //change the prestige up by 1
             game.prestige++;
 
+            //multiply by prestige if prestige is 2 or higher
+            if (game.prestige >= 2) {
+                game.prestigePoints *= game.prestige;
+            } else if (game.prestige <= 1) {
+                //add 1 to prestigePoints
+                game.prestigePoints++;
+            }
+            
+
             //reset variables
             game.score = 0;
             game.clickValue = 1;
@@ -753,6 +769,13 @@ setInterval (function() {
     game.score += game.getScorePerSecond();
     game.totalScore += game.getScorePerSecond();
 
+    //calculate futurePrestigePoints
+    if (game.prestige == 0) {
+        game.futurePrestigePoints = 1;
+    } else if (game.prestige >= 1) {
+        game.futurePrestigePoints = game.prestige * game.prestigePoints;
+    }
+
     //update score display
     display.updateScore();
 }, 1000); //1000ms = 1 second
@@ -766,6 +789,7 @@ function saveGame() {
         totalClicks: game.totalClicks,
         clickValue: game.clickValue,
         prestige: game.prestige,
+        prestigePoints: game.prestigePoints,
         skillCount: skill.count,
         skillCost: skill.cost,
         skillIncome: skill.income,
@@ -785,6 +809,7 @@ function loadGame() {
         if (typeof savedGame.totalClicks !== "undefined") game.totalClicks = savedGame.totalClicks;
         if (typeof savedGame.clickValue !== "undefined") game.clickValue = savedGame.clickValue;
         if (typeof savedGame.prestige !== "undefined") game.prestige = savedGame.prestige;
+        if (typeof savedGame.prestigePoints !== "undefined") game.prestigePoints = savedGame.prestigePoints;
         if (typeof savedGame.skillCount !== "undefined") {
             for(i = 0; i < savedGame.skillCount.length; i++) {
                 skill.count[i] = savedGame.skillCount[i];
@@ -843,8 +868,4 @@ function resetGame() {
         location.reload();
         loadGame();
     }
-}
-
-function checkPrestige() {
-    alert(game.prestige);
 }

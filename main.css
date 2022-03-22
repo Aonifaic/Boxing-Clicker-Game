@@ -20,6 +20,38 @@
 	background-color: rgb(182, 187, 192);
 }
 
+#menu {
+	background-image: url(./images/menu.png);
+	background-size: contain;
+	width: 64px;
+	height: 64px;
+	cursor: pointer;
+	position: relative;
+	margin-left: 10px;
+}
+
+.menuButton {
+	background-color: rgb(238, 238, 238);
+	transition: all.2s ease-in-out;
+	border-radius: 10px;
+	margin: 10px 0px 10px 0px;
+	width: 80%;
+	margin-left: 10px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.menuButton:hover {
+	background-color: rgb(238, 238, 260);
+	transition: all .2s ease-in-out;
+}
+
+.menuButton p {
+	width: 100%;
+	font-size: 24px;
+	font-weight: bold;
+}
+
 #scoreContainer {
 	margin-top: 10px;
 	width: 40%;
@@ -242,13 +274,11 @@
 	width: 64px;
 }
 
-.prestigeButton #nameAndCost p {
+.prestigeButton #name p {
 	margin: 0px;
 	width: 70%;
-}
-
-.prestigeButton #nameAndCost p:first-of-type {
 	font-size: 24px;
+	margin-left: 5px;
 }
 
 .prestigeButton #amount {
@@ -258,36 +288,12 @@
 	width: 15%;
 }
 
-#menu {
-	background-image: url(./images/menu.png);
-	background-size: contain;
-	width: 64px;
-	height: 64px;
-	cursor: pointer;
-	position: relative;
-	margin-left: 10px;
-}
-
-.menuButton {
-	background-color: rgb(238, 238, 238);
-	transition: all.2s ease-in-out;
-	border-radius: 10px;
-	margin: 10px 0px 10px 0px;
-	width: 80%;
-	margin-left: 10px;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.menuButton:hover {
-	background-color: rgb(238, 238, 260);
-	transition: all .2s ease-in-out;
-}
-
-.menuButton p {
-	width: 100%;
-	font-size: 24px;
+.prestigeButton #nameOf p {
+	width: 85%;
+	margin: 0px;
 	font-weight: bold;
+	font-size: 24px;
+	margin-left: 5px;
 }
 
 .unselectable {
